@@ -14,7 +14,7 @@ class Scraper
       search_page = Nokogiri::HTML(open("https://www.goodreads.com/search?q=#{input}&search_type=books")) #interpolates input to search url and pulls page with nokogiri
       item_page = Nokogiri::HTML(open("https://goodreads.com/#{search_page.css("table a").attribute("href").value}"))
       @author = item_page.css("div#bookAuthors.stacked span :not(.greyText) :not(.smallText)").text
-      @title = item_page.css("h1#bookTitle.bookTitle").text.reverse.chomp.reverse.lines.first.chomp.sub /\A\s+/, "" #provides title
+      @title = item_page.css("h1#bookTitle.bookTitle").text.reverse.strip.reverse.lines.first.chomp #provides title
       @series = ((item_page.css("h1#bookTitle.bookTitle :first-child").text).sub "(", "").sub ")", "" #provides series
       @release_date = item_page.css("div#details .row").text.split(/\n+/)[2].sub /\A\s+/, "" #provides the release date
     end

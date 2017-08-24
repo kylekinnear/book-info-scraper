@@ -1,8 +1,6 @@
 #CLI Interface
-
 require 'nokogiri'
 require 'open-uri'
-require 'pry'
 
 require_relative './scraper.rb'
 
@@ -10,7 +8,11 @@ puts "Welcome to Book Info Scraper!"
 book = Scraper.new
 book.scrape
 
-puts "Author:          #{book.author}"
-puts "Title:           #{book.title}"
-puts "Series:          #{book.series}"
-puts "Release Date:    #{book.release_date}"
+puts "Author:".ljust(22) << "#{book.author}"
+puts "Title:".ljust(22) << "#{book.title}"
+puts "Series:".ljust(22) << "#{book.series}"
+if book.release_date.size > 0
+  puts "Release Date:".ljust(22) << "#{book.release_date}"
+else
+  puts "Release Date:".ljust(22) << "No date yet"
+end

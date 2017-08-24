@@ -3,7 +3,7 @@ require 'open-uri'
 require 'pry'
 
 class Scraper
-  attr_accessor :author, :title, :series, :release_date
+  attr_accessor :author, :title, :series, :release_date, :scrape_hash
 
   def scrape
     puts "Enter your search term (usually combination of author and title)"
@@ -15,8 +15,10 @@ class Scraper
       item_page = Nokogiri::HTML(open("https://goodreads.com/#{search_page.css("table a").attribute("href").value}"))
       @author = item_page.css("div#bookAuthors.stacked span :not(.greyText) :not(.smallText)").text
       @title = item_page.css("h1#bookTitle.bookTitle").text.reverse.strip.reverse.lines.first.chomp #provides title
-      @series = ((item_page.css("h1#bookTitle.bookTitle :first-child").text).sub "(", "").sub ")", "" #provides series
+      @series = ((item_page.css("h1#bookTitle.bookTitle :first-child").text.strip).sub "(", "").sub ")", "" #provides series
       @release_date = item_page.css("div#details .row").text.split(/\n+/)[2].sub /\A\s+/, "" #provides the release date
+      @scrape_hash = { author: @author, title: @title, series: @series, release_date: @release_date}
     end
   end
+
 end

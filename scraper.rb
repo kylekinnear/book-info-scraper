@@ -1,6 +1,5 @@
 require 'nokogiri'
 require 'open-uri'
-require 'pry'
 
 class Scraper
   attr_accessor :author, :title, :series, :release_date, :scrape_hash
@@ -17,7 +16,6 @@ class Scraper
       @title = item_page.css("h1#bookTitle.bookTitle").text.reverse.strip.reverse.lines.first.chomp #provides title
       @series = ((item_page.css("h1#bookTitle.bookTitle :first-child").text.strip).sub "(", "").sub ")", "" #provides series
       @release_date = item_page.css("div#details .row").text.split(/\n+/)[2].sub /\A\s+/, "" #provides the release date
-      @scrape_hash = { author: @author, title: @title, series: @series, release_date: @release_date}
     end
   end
 

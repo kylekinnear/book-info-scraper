@@ -6,3 +6,9 @@ for finding getting some of author/title/series/release date when you have some 
 
 In the future I'd like to add series support, clean some output edge cases (special characters, multiple authors),
 and polish the interface
+
+
+Hash output?
+
+added blurb, average, ratings
+format blurb

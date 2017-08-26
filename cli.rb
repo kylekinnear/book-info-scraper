@@ -16,3 +16,13 @@ if book.release_date.size > 0
 else
   puts "Release Date:".ljust(22) << "No date yet"
 end
+if book.average.size > 0
+  puts "Rating (#):".ljust(22) << "#{book.average} (#{book.ratings})"
+else
+  puts "Ratings:".ljust(22) << "No ratings yet"
+end
+if book.blurb.size > 0
+  puts "Blurb:".ljust(22) << "#{book.blurb}"
+else
+  puts "Blurb:".ljust(22) << "No blurb yet"
+end

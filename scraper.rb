@@ -1,6 +1,5 @@
 require 'nokogiri'
 require 'open-uri'
-require 'pry'
 
 class Scraper
   attr_accessor :author, :title, :series, :release_date, :average, :ratings, :blurb, :scrape_hash
@@ -34,5 +33,3 @@ class Scraper
   end
 
 end
-
-binding.pry

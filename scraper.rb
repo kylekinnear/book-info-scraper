@@ -4,6 +4,33 @@ require 'open-uri'
 class Scraper
   attr_accessor :author, :title, :series, :release_date, :average, :ratings, :blurb
 
+  def call
+    puts "Welcome to Book Info Scraper!"
+    scrape
+
+    puts "Title:".ljust(22) << "#{@title}"
+    puts "Author:".ljust(22) << "#{@author}"
+    puts "Series:".ljust(22) << "#{@series}"
+    if @release_date.size > 0
+      puts "Release Date:".ljust(22) << "#{@release_date}"
+    else
+      puts "Release Date:".ljust(22) << "No date yet"
+    end
+    if @average.size > 0
+      puts "Rating (#):".ljust(22) << "#{@average} (#{@ratings})"
+    else
+      puts "Ratings:".ljust(22) << "No ratings yet"
+    end
+    if @blurb.size > 0
+      puts "Blurb:"
+      puts "#{wrap_blurb}"
+    else
+      puts "Blurb:"
+      puts "No blurb yet"
+    end
+  end
+
+
   def scrape
     puts "Enter your search term (usually combination of author and title)"
     input = gets.strip #gets input line

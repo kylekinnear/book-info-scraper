@@ -22,7 +22,9 @@ else
   puts "Ratings:".ljust(22) << "No ratings yet"
 end
 if book.blurb.size > 0
-  puts "Blurb:".ljust(22) << "#{book.blurb}"
+  puts "Blurb:"
+  puts "#{book.wrap_blurb}"
 else
-  puts "Blurb:".ljust(22) << "No blurb yet"
+  puts "Blurb:"
+  puts "No blurb yet"
 end

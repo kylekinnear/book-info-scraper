@@ -2,17 +2,20 @@ require 'nokogiri'
 require 'open-uri'
 
 class Scraper
-  attr_accessor :author, :title, :series, :release_date, :average, :ratings, :blurb, :scrape_hash
+  attr_accessor :author, :title, :series, :release_date, :average, :ratings, :blurb
 
   def scrape
     puts "Enter your search term (usually combination of author and title)"
     input = gets.strip #gets input line
     if input.size > 0 #checks valid input
+      if input.upcase == "quit".upcase
+        return
+      end
       puts "Checking now!"
       input.gsub!(/(\W)+/, "+") #formats input as valid search string
       search_page = Nokogiri::HTML(open("https://www.goodreads.com/search?q=#{input}&search_type=books")) #interpolates input to search url and pulls page with nokogiri
       if search_page.css("table a").size != 0
-        item_page = Nokogiri::HTML(open("https://goodreads.com/#{search_page.css("table a").attribute("href").value}"))
+        item_page = Nokogiri::HTML(open("https://goodreads.com/#{search_page.css("table a").attribute("href").value}").read)
       else
         raise NoBook
       end
@@ -22,8 +25,25 @@ class Scraper
       @release_date = item_page.css("div#details .row").text.split(/\n+/)[2].sub /\A\s+/, "" #provides the release date
       @average = item_page.css("span.average").text
       @ratings = item_page.css("span.votes.value-title").text.strip
-      @blurb = item_page.xpath('//span[starts-with(@id, "freeText")]')[1].text.gsub("\u0080\u0099","'").gsub(/[.](?=\S)/, ". ").gsub("\u0080\u0095", ", ").gsub("â","")
+      @blurb = item_page.xpath('//span[starts-with(@id, "freeText")]')[1].text.gsub(/\s+/, " ")
     end
+  end
+
+  def wrap_blurb(width=78)
+    lines = []
+    line = ""
+    @blurb.split(/\s+/).each do |word|
+      if line.size + word.size >= width
+        lines << line
+        line = word
+      elsif line.empty?
+        line = word
+      else
+        line << " " << word
+      end
+    end
+    lines << line if line
+    return lines.join "\n"
   end
 
   class NoBook < StandardError

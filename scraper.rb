@@ -60,6 +60,11 @@ class Scraper
     lines = []
     line = ""
     @blurb.split(/\s+/).each do |word|
+  #    if /[.?!]\S/.match(word) != nil
+  #      word.gsub(".", ".\n")
+  #      word.gsub("?", "?\n")
+  #      word.gsub("!", "!\n")
+  #    end
       if line.size + word.size >= width
         lines << line
         line = word
@@ -70,7 +75,7 @@ class Scraper
       end
     end
     lines << line if line
-    return lines.join "\n"
+    return (lines.join "\n")#.gsub(/[.!?]\S/){|match| "#{match[0]}\n#{match[1]}"}
   end
 
   class NoBook < StandardError

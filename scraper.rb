@@ -54,6 +54,11 @@ class Scraper
       @ratings = item_page.css("span.votes.value-title").text.strip
       @blurb = item_page.xpath('//span[starts-with(@id, "freeText")]')[1].text.gsub(/\s+/, " ")
     end
+
+    ##      determinant = search_page.css("span.minirating").map.with_index {|i,index| [index, i.text.strip.slice(/\s(\d|,)+/).strip.gsub(",","").to_i]}.sort! {|x,y| x[1].to_i <=> y[1].to_i}.last #the search result with the most rates (and presumably most legitimate) is an array [result_index, #rates]
+    ##  item_page = Nokogiri::HTML(open("https://goodreads.com/#{search_page.css("table a.bookTitle")[determinant[0]].attribute("href").value}",'User-Agent' => 'Ruby').read)
+    ##use to refine scrape to get search result with most ratings
+
   end
 
   def wrap_blurb(width=78)
